@@ -2,6 +2,7 @@
 """
 Route module for the API
 """
+from typing import Union
 from os import getenv
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request, Request
@@ -15,7 +16,7 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
 
 @app.errorhandler(401)
-def unauthorized(error: Exception | int) -> str:
+def unauthorized(error: Union[Exception, int]) -> str:
     """ Return a 401 error"""
     return jsonify({"error": "Unauthorized"}), 401
 
