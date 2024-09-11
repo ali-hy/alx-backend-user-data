@@ -47,8 +47,9 @@ def login() -> str:
     Return:
       - a JSON response with the user's email and a message
     """
-    email = request.form.get('email')
-    password = request.form.get('password')
+    reqjson = request.get_json()
+    email = reqjson.get('email')
+    password = request.get('password')
 
     if not auth.valid_login(email, password):
         abort(401)
