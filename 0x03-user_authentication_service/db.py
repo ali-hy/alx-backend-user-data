@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """DB module
 """
-from typing import Type
+from typing import Dict, Any
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
-from user import Base
+from user import Base, User
 
 
 class DB:
@@ -32,11 +32,9 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str):
+    def add_user(self, email: str, hashed_password: str) -> User:
         """Add a user to the database
         """
-        from user import User
-
         if not email or not hashed_password:
             raise ValueError("Email and hashed_password are required")
 
@@ -45,13 +43,10 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs: Dict[str, Any]) -> User:
         """Find a user by a given attribute
         """
-        from user import User
-
         query = self._session.query(User)
-
 
         for key in kwargs:
             if not hasattr(User, key):
