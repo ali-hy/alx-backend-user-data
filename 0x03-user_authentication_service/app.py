@@ -45,7 +45,7 @@ def login() -> str:
       - email: the user's email
       - password: the user's password
     Return:
-      - a JSON response with the new user's email
+      - a JSON response with the user's email and a message
     """
     email = request.form.get('email')
     password = request.form.get('password')
