@@ -36,7 +36,7 @@ class DB:
         from user import User
 
         if not email or not hashed_password:
-            raise ValueError("Email and hashed_password are required");
+            raise ValueError("Email and hashed_password are required")
 
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
