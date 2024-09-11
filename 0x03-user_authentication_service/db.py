@@ -6,6 +6,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 from user import Base
 
 
@@ -41,4 +43,24 @@ class DB:
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
         self._session.commit()
+        return user
+
+    def find_user_by(self, **kwargs):
+        """Find a user by a given attribute
+        """
+        from user import User
+
+        query = self._session.query(User)
+
+
+        for key in kwargs:
+            if not hasattr(User, key):
+                raise InvalidRequestError
+
+            query = query.filter(getattr(User, key) == kwargs[key])
+
+        user = query.first()
+        if user is None:
+            raise NoResultFound
+
         return user
