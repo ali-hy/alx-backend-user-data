@@ -57,9 +57,9 @@ def login() -> str:
     if not session_id:
         abort(401)
 
-    response = make_response(jsonify({"email": email,
-                                      "message": "logged in"}))
-    response.set_cookie('session_id', auth.create_session(email))
+    response = jsonify({"email": email, "message": "logged in"})
+    response.set_cookie("session_id", session_id)
+
     return response
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
@@ -95,24 +95,6 @@ def profile() -> str:
         abort(403)
 
     return jsonify({"email": user.email}), 200
-
-@app.route('/reset_password', methods=['POST'], strict_slashes=False)
-def get_reset_password_token() -> str:
-    """POST /reset_password
-    JSON body:
-      - email: the user's email
-    Return:
-      - a JSON response with the reset token
-    """
-    email = request.form.get('email')
-
-    try:
-        token = auth.get_reset_password_token(email)
-        return jsonify({"email": email, "reset_token": token})
-    except ValueError:
-        abort(403)
-
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port="5000")
