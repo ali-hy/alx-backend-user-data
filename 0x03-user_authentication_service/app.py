@@ -62,6 +62,7 @@ def login() -> str:
 
     return response
 
+
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> str:
     """DELETE /sessions
@@ -80,6 +81,7 @@ def logout() -> str:
 
     return jsonify({}), 200
 
+
 @app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile() -> str:
     """GET /profile
@@ -95,6 +97,7 @@ def profile() -> str:
         abort(403)
 
     return jsonify({"email": user.email}), 200
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port="5000")
